@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>URL Multiplexer setup</title>
+	<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+	<h3>Link multiplexing rules</h3>
+	<div id="rulesContainer"></div>
+	<button id="addRuleBtn">Add URI rule</button>
+	<p id="statusMessage"></p>
+	
+	<template id="rule-entry-template">
+		<div class="rule-entry">
+			<label>Base URI (e.g., https://foo.bar.com)</label>
+			<input type="text" class="base-uri-input" placeholder="Enter base URI..." />
+			<div class="suffix-list">
+				<label>Suffixes (will be appended to the link path)</label>
+				<div class="suffixes-container">
+				</div>
+			</div>
+			<button class="add-suffix-btn" type="button">Add Suffix</button>
+			<button class="remove-rule-btn" type="button">Remove Rule</button>
+			<hr>
+		</div>
+	</template>
+
+	<template id="suffix-input-template">
+		<div class="suffix-item">
+			<input type="text" class="suffix-input" placeholder="/user/info" /> 
+			<button class="remove-suffix-btn" type="button">X</button>
+		</div>
+	</template>
+	
+	<script src="../js/popup.js"></script>
+</body>
+</html>

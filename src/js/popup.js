@@ -54,24 +54,14 @@ function renderRules() {
 	}
 }
 
+
 // Creates the HTML element for a single Base URI + Suffixes group
 function createRuleEntry(rule, index) {
-	const div = document.createElement('div');
-	div.className = 'rule-entry';
-	div.setAttribute('data-index', index);
+  const ruleTemplate = document.getElementById('rule-entry-template');
+	const div = ruleTemplate.content.firstElementChild.cloneNode(true); 
 	
-	div.innerHTML = `
-		<label>Base URI (e.g., https://foo.bar.com)</label>
-		<input type="text" class="base-uri-input" value="${rule.base_uri}" placeholder="Enter base URI..." />
-		<div class="suffix-list">
-		    <label>Suffixes (will be appended to the link path)</label>
-		    <div class="suffixes-container">
-		        </div>
-		</div>
-		<button class="add-suffix-btn" type="button">Add Suffix</button>
-		<button class="remove-rule-btn" type="button">Remove Rule</button>
-		<hr>
-		`;
+	div.setAttribute('data-index', index);
+	div.querySelector('.base-uri-input').value = rule.base_uri;
 
 	const addSuffixButton = document.getElementById('add-suffix-btn');
 	const removeRuleButton = document.getElementById('remove-rule-btn');
@@ -97,12 +87,10 @@ function createRuleEntry(rule, index) {
 
 // Creates the HTML element for a single suffix input field
 function createSuffixInput(value) {
-	const itemDiv = document.createElement('div');
-	itemDiv.className = 'suffix-item';
-	itemDiv.innerHTML = `
-		<input type="text" class="suffix-input" value="${value}" placeholder="/user/info" style="flex-grow: 1;"/>
-		<button class="remove-suffix-btn" type="button">X</button>
-	`;
+  const suffixTemplate = document.getElementById('suffix-input-template');
+	const itemDiv = suffixTemplate.content.firstElementChild.cloneNode(true);
+	
+	itemDiv.querySelector('.suffix-input').value = value;
 
 	itemDiv.querySelector('.remove-suffix-btn').addEventListener('click', () => {
 	itemDiv.remove();
