@@ -43,7 +43,12 @@ async function processNavigation(tabId, url) {
       let fullPath = url.endsWith("/") ? url : url + "/";
       let suffixPath = rule.suffix.startsWith("/") ? 
         rule.suffix.substring(1, rule.suffix.length) : rule.suffix;
-      let uriToOpen = fullPath + suffixPath;
+      const baseUri = rule.base_uri.endsWith("/") ? rule.base_uri : rule.base_uri + "/";
+      const replace = rule.replace.startsWith("/") ?
+        rule.replace.substring(1, rule.replace.length) : rule.replace;
+      const replaceWithEnd = replace.endsWith("/") ? replace : replace + "/";
+      const uriToOpen = replace.length > 0 ? rule.base_uri + replaceWithEnd + suffixPath : 
+        fullPath + suffixPath;
       tabsToOpen.push(uriToOpen);
 		}
 	}
