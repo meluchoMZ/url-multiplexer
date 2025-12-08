@@ -1,7 +1,6 @@
 const rulesContainer = document.getElementById('rulesContainer');
 const addRuleBtn = document.getElementById('addRuleBtn');
-const statusMessage = document.getElementById('statusMessage');
-let rules = []; 
+let rules = [];
 
 
 // Load rules from storage
@@ -17,22 +16,12 @@ function saveRules() {
 	const newRules = [];
 	const ruleElements = rulesContainer.querySelectorAll('.rule-entry');
 	
-	ruleElements.forEach(ruleEl => {
-		const baseUri = ruleEl.querySelector('.base-uri-input').value.trim();
-		const suffixInputs = ruleEl.querySelectorAll('.suffix-input');
+	ruleElements.forEach(ruleElements => {
+		const baseUri = ruleElements.querySelector('.base-uri-input').value.trim();
+		const suffix = ruleElements.querySelector('.suffix-input').value.trim();
 		
-		if (baseUri) {
-			const suffixes = [];
-			suffixInputs.forEach(input => {
-				const suffix = input.value.trim();
-				if (suffix) {
-				    suffixes.push(suffix);
-				}
-			});
-			
-			if (suffixes.length > 0) {
-				newRules.push({ base_uri: baseUri, suffixes: suffixes });
-			}
+		if (baseUri && suffix) {
+		  newRules.push({ base_uri: baseUri, suffix: suffix });
 		}
 	});
 	
@@ -66,43 +55,20 @@ function createRuleEntry(rule, index) {
 	const addSuffixButton = document.getElementById('add-suffix-btn');
 	const removeRuleButton = document.getElementById('remove-rule-btn');
 	
-	const suffixesContainer = div.querySelector('.suffixes-container');
-	rule.suffixes.forEach(suffix => {
-		suffixesContainer.appendChild(createSuffixInput(suffix));
-	});
-
-	div.querySelector('.add-suffix-btn').addEventListener('click', () => {
-    		suffixesContainer.appendChild(createSuffixInput(''));
-    		saveRules(); 
-    		renderRules(); 
-	});
+  div.querySelector('.suffix-input').value = rule.suffix;
 
 	div.querySelector('.remove-rule-btn').addEventListener('click', () => {
-    		rules.splice(index, 1);
-    		saveRules(); 
-    		renderRules();
+    rules.splice(index, 1);
+    renderRules();
+    // as rules are saved from the DOM, we have to re-render them before
+    saveRules(); 
 	});
 	return div;
 }
 
-// Creates the HTML element for a single suffix input field
-function createSuffixInput(value) {
-  const suffixTemplate = document.getElementById('suffix-input-template');
-	const itemDiv = suffixTemplate.content.firstElementChild.cloneNode(true);
-	
-	itemDiv.querySelector('.suffix-input').value = value;
-
-	itemDiv.querySelector('.remove-suffix-btn').addEventListener('click', () => {
-	itemDiv.remove();
-	saveRules();
-	renderRules();
-	});
-	return itemDiv;
-}
-
 addRuleBtn.addEventListener('click', () => {
 	// Add a temporary new rule structure for the renderer
-	rules.push({ base_uri: '', suffixes: [''] });
+	rules.push({ base_uri: '', suffix: '' });
 	renderRules();
 });
 

@@ -9,7 +9,8 @@
 		"declarativeNetRequest"
 	],
 	"host_permissions": [
-		"<all_urls>"
+    "http://*/*",
+    "https://*/*"
 	],
 	"action": {
 		"default_popup": "html/popup.html",

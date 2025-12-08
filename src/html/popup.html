@@ -15,23 +15,16 @@
 			<label>Base URI (e.g., https://foo.bar.com)</label>
 			<input type="text" class="base-uri-input" placeholder="Enter base URI..." />
 			<div class="suffix-list">
-				<label>Suffixes (will be appended to the link path)</label>
-				<div class="suffixes-container">
-				</div>
+				<label>Suffix (will be appended to the link path)</label>
+        <div class="suffix-item">
+          <input type="text" class="suffix-input" placeholder="/user/info" /> 
+        </div>
 			</div>
-			<button class="add-suffix-btn" type="button">Add Suffix</button>
-			<button class="remove-rule-btn" type="button">Remove Rule</button>
+			<button class="remove-rule-btn" type="button">Remove rule</button>
 			<hr>
 		</div>
 	</template>
 
-	<template id="suffix-input-template">
-		<div class="suffix-item">
-			<input type="text" class="suffix-input" placeholder="/user/info" /> 
-			<button class="remove-suffix-btn" type="button">X</button>
-		</div>
-	</template>
-	
 	<script src="../js/popup.js"></script>
 </body>
 </html>
