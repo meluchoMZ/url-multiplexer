@@ -19,9 +19,12 @@ function saveRules() {
 	ruleElements.forEach(ruleElements => {
 		const baseUri = ruleElements.querySelector('.base-uri-input').value.trim();
 		const suffix = ruleElements.querySelector('.suffix-input').value.trim();
+    const switchInput = ruleElements.querySelector('.enable-rule-switch input[type="checkbox"]');
+    const enabled = switchInput.checked;
+
 		
 		if (baseUri && suffix) {
-		  newRules.push({ base_uri: baseUri, suffix: suffix });
+		  newRules.push({ base_uri: baseUri, suffix: suffix, enabled: enabled });
 		}
 	});
 	
@@ -56,6 +59,9 @@ function createRuleEntry(rule, index) {
 	const removeRuleButton = document.getElementById('remove-rule-btn');
 	
   div.querySelector('.suffix-input').value = rule.suffix;
+  const switchInput = div.querySelector('.enable-rule-switch input[type="checkbox"]');
+  switchInput.checked = rule.enabled;
+
 
 	div.querySelector('.remove-rule-btn').addEventListener('click', () => {
     rules.splice(index, 1);
@@ -68,7 +74,8 @@ function createRuleEntry(rule, index) {
 
 addRuleBtn.addEventListener('click', () => {
 	// Add a temporary new rule structure for the renderer
-	rules.push({ base_uri: '', suffix: '' });
+  // by default the new rules are enabled
+	rules.push({ base_uri: '', suffix: '' , enabled: true});
 	renderRules();
 });
 
