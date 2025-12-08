@@ -13,7 +13,7 @@ async function processNavigation(tabId, url) {
 	let matchFound = false;
 	
 	for (const rule of rules) {
-		if (url.startsWith(rule.base_uri) && !url.endsWith(rule.suffix)) {
+		if (rule.enabled && url.startsWith(rule.base_uri) && !url.endsWith(rule.suffix)) {
 			matchFound = true;
 
       let fullPath = url.endsWith("/") ? url : url + "/";
