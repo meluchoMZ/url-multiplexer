@@ -65,7 +65,7 @@ async function processNavigation(tabId, url) {
       let suffixPath = rule.suffix.startsWith("/") ? 
         rule.suffix.substring(1, rule.suffix.length) : rule.suffix;
       const baseUri = rule.base_uri.endsWith("/") ? rule.base_uri : rule.base_uri + "/";
-      const path = fullPath.substring(rule.base_uri);
+      const path = fullPath.replace(rule.base_uri, "");
       // if the replace field has something in it, it applies the regular expression
       // to the uri path
       const replace = rule.replace;
