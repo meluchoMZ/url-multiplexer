@@ -28,6 +28,27 @@ function anyMatch(url, suffixes) {
   return false;
 }
 
+const transformExpression = (expression, sourceString) => {
+  const sedRegex = /^s(.)(.*?)\1(.*?)\1(.*)?$/;
+  const match = expression.match(sedRegex);
+  if (!match) {
+      console.error("Invalid expression format. Must be 's/regexp/replacement/flags'.");
+      return sourceString;
+  }
+  const [, , patternString, replacementString, flags] = match;
+  console.debug("pattern: ", patternString);
+  console.debug("replacement: ", replacementString);
+  console.debug("flags", flags);
+
+  try {
+      const regex = new RegExp(patternString, flags);
+      return sourceString.replace(regex, replacementString);
+  } catch (e) {
+      console.error("Error creating RegExp or during replacement:", e);
+      return sourceString;
+  }
+};
+
 // Function to load rules from storage and process the navigation
 async function processNavigation(tabId, url) {
 	const data = await chrome.storage.local.get('uriRules');
@@ -44,10 +65,11 @@ async function processNavigation(tabId, url) {
       let suffixPath = rule.suffix.startsWith("/") ? 
         rule.suffix.substring(1, rule.suffix.length) : rule.suffix;
       const baseUri = rule.base_uri.endsWith("/") ? rule.base_uri : rule.base_uri + "/";
-      const replace = rule.replace.startsWith("/") ?
-        rule.replace.substring(1, rule.replace.length) : rule.replace;
-      const replaceWithEnd = replace.endsWith("/") ? replace : replace + "/";
-      const uriToOpen = replace.length > 0 ? rule.base_uri + replaceWithEnd + suffixPath : 
+      const path = fullPath.substring(rule.base_uri);
+      // if the replace field has something in it, it applies the regular expression
+      // to the uri path
+      const replace = rule.replace;
+      const uriToOpen = replace.length > 0 ? rule.base_uri + transformExpression(replace, path) + suffixPath : 
         fullPath + suffixPath;
       tabsToOpen.push(uriToOpen);
 		}
